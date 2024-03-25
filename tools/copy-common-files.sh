@@ -15,6 +15,7 @@ cp -R src/js/*.js                  $DES/js/
 cp -R src/js/codemirror            $DES/js/
 cp -R src/js/scriptlets            $DES/js/
 cp -R src/js/wasm                  $DES/js/
+cp -R src/js/webln                 $DES/
 cp -R src/lib                      $DES/
 cp -R src/web_accessible_resources $DES/
 cp -R src/_locales                 $DES/
