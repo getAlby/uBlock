@@ -358,6 +358,7 @@ const onFirstFetchReady = (fetched, adminExtra) => {
     sessionSwitches.assign(permanentSwitches);
 
     onNetWhitelistReady(fetched.netWhitelist, adminExtra);
+    µb.netEnabledDomains = fetched.netEnabledDomains;
 };
 
 /******************************************************************************/
@@ -383,6 +384,7 @@ const createDefaultProps = ( ) => {
         'urlFilteringString': '',
         'hostnameSwitchesString': µb.hostnameSwitchesDefault.join('\n'),
         'netWhitelist': µb.netWhitelistDefault,
+        'netEnabledDomains': [],
         'version': '0.0.0.0'
     };
     toFetch(µb.restoreBackupSettings, fetchableProps);

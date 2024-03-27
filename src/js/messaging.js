@@ -185,6 +185,12 @@ const onMessage = function(request, sender, callback) {
             reHostnameExtractor: µb.reWhitelistHostnameExtractor.source
         };
         break;
+      
+    case 'getEnabledDomains':
+        response = {
+            enabledDomains: µb.netEnabledDomains
+        };
+        break;
 
     case 'launchElementPicker':
         // Launched from some auxiliary pages, clear context menu coords.
@@ -226,6 +232,16 @@ const onMessage = function(request, sender, callback) {
         µb.netWhitelist = µb.whitelistFromString(request.whitelist);
         µb.saveWhitelist();
         filteringBehaviorChanged();
+        break;
+      
+    case 'addEnabledDomain':
+        µb.netEnabledDomains = [...µb.netEnabledDomains, request.domain];
+        µb.saveEnabledDomains();
+        break;
+      
+    case 'removeEnabledDomain':
+        µb.netEnabledDomains = µb.netEnabledDomains.filter(domain => domain !== request.domain);
+        µb.saveEnabledDomains();
         break;
 
     case 'toggleHostnameSwitch':
@@ -1035,6 +1051,7 @@ const backupUserData = async function() {
         hiddenSettings:
             µb.getModifiedSettings(µb.hiddenSettings, µb.hiddenSettingsDefault),
         whitelist: µb.arrayFromWhitelist(µb.netWhitelist),
+        enabledDomains: µb.netEnabledDomains,
         dynamicFilteringString: permanentFirewall.toString(),
         urlFilteringString: permanentURLFiltering.toString(),
         hostnameSwitchesString: permanentSwitches.toString(),
@@ -1118,6 +1135,7 @@ const restoreUserData = async function(request) {
     vAPI.storage.set({
         hiddenSettings,
         netWhitelist: whitelist || [],
+        netEnabledDomains: userData.enabledDomains || [],
         dynamicFilteringString: userData.dynamicFilteringString || '',
         urlFilteringString: userData.urlFilteringString || '',
         hostnameSwitchesString: userData.hostnameSwitchesString || '',
@@ -1406,6 +1424,7 @@ const getSupportData = async function() {
             µb.arrayFromWhitelist(µb.netWhitelist),
             µb.netWhitelistDefault
         ),
+        enabledset: µb.netEnabledDomains,
         switchRuleset: diffArrays(
             sessionSwitches.toArray(),
             µb.hostnameSwitchesDefault

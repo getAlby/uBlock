@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>uBlock — Lightning</title>
+
+<link rel="stylesheet" href="css/themes/default.css">
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/fa-icons.css">
+<link rel="stylesheet" href="css/dashboard-common.css">
+<link rel="stylesheet" href="css/lightning.css">
+</head>
+
+<body>
+
+<div class="body">
+    <p class="vverbose" data-i18n="lightningPrompt"></p>
+    <bc-button></bc-button>
+</div>
+<div class="fieldset">
+    <div class="fieldset-header" data-i18n="enabledDomains"></div>
+    <div id="enabledDomains"></div>
+</div>
+
+<div id="templates" style="display: none;">
+  <div class="li enabledDomain"><span class="enabled-domain-text"></span>&nbsp;<span class="fa-icon info remove-enabled-domain-button" data-domain=>power-off</span></div>
+</div>
+
+<script src="js/vapi.js"></script>
+<script src="js/vapi-common.js"></script>
+<script src="js/vapi-client.js"></script>
+
+<script src="js/fa-icons.js" type="module"></script>
+<script src="js/theme.js" type="module"></script>
+<script src="js/i18n.js" type="module"></script>
+<script src="js/dashboard-common.js" type="module"></script>
+<script src="js/nostr-tools.js"></script>
+<script src="js/lightning.js" type="module"></script>
+
+</body>
+</html>

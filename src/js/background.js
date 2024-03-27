@@ -176,6 +176,8 @@ const µBlock = {  // jshint ignore:line
         'moz-extension-scheme',
     ],
 
+    netEnabledDomains: [],
+    
     requestStats: {
         blockedCount: 0,
         allowedCount: 0,

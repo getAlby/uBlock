@@ -39,6 +39,10 @@
     "message": "My rules",
     "description": "appears as tab name in dashboard"
   },
+  "lightningPageName": {
+    "message": "Lightning",
+    "description": "appears as tab name in dashboard"
+  },
   "whitelistPageName": {
     "message": "Trusted sites",
     "description": "appears as tab name in dashboard"
@@ -646,6 +650,14 @@
   "whitelistApply": {
     "message": "Apply changes",
     "description": "English: Apply changes"
+  },
+  "lightningPrompt": {
+    "message": "Connect your wallet to enable Lightning feature.",
+    "description": "A concise description of the 'Lightning' pane."
+  },
+  "enabledDomains": {
+    "message": "Enabled domains",
+    "description": "Enabled domains section name"
   },
   "logRequestsHeaderType": {
     "message": "Type",

@@ -418,7 +418,14 @@ onBroadcast(msg => {
     vAPI.storage.set({
         netWhitelist: this.arrayFromWhitelist(this.netWhitelist)
     });
-    this.netWhitelistModifyTime = Date.now();
+};
+
+/******************************************************************************/
+
+µb.saveEnabledDomains = function() {
+    vAPI.storage.set({
+        netEnabledDomains: this.netEnabledDomains
+    });
 };
 
 /******************************************************************************/
