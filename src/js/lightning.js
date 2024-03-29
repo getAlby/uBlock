@@ -23,10 +23,6 @@
 
 import { dom } from './dom.js';
 import {onConnected} from './bitcoin-connect/bitcoin-connect@3.2.2.js';
-onConnected((provider) => {
-    console.log('Connected with provider', provider);
-});
-
 
 /******************************************************************************/
 
@@ -38,6 +34,12 @@ async function renderEnabledDomains() {
     const details = await messaging.send('dashboard', {
         what: 'getEnabledDomains',
     });
+  
+    if (!details.enabledDomains || details.enabledDomains.length === 0) {
+        document.querySelector('#enabledDomainsEmptyMessage').classList.remove('hidden');
+    } else {
+        document.querySelector('#enabledDomainsEmptyMessage').classList.add('hidden');
+    }
 
     details.enabledDomains.sort((a, b) => {
         return a.localeCompare(b);
@@ -61,8 +63,9 @@ async function renderEnabledDomains() {
 
 async function removeEnableDomain(domain) {
     await messaging.send('dashboard', {
-        what: 'removeEnabledDomain',
+        what: 'setEnabledDomain',
         domain,
+        enabled: false,
     });
     renderEnabledDomains();
 }
@@ -74,5 +77,23 @@ self.wikilink = 'https://github.com/gorhill/uBlock/wiki/Dashboard:-Lightning';
 /******************************************************************************/
 
 renderEnabledDomains();
+
+/******************************************************************************/
+
+onConnected(async (provider) => {
+    const nwcPairingSecret = await messaging.send('dashboard', {
+        what: 'getNwcPairingSecret',
+    });
+
+    const nostrWalletConnectUrl = provider.client.options.nostrWalletConnectUrl || "";
+    if (!nostrWalletConnectUrl || nostrWalletConnectUrl === nwcPairingSecret) {
+        return;
+    }
+
+    messaging.send('dashboard', {
+        what: 'saveNwcPairingSecret',
+        nwcPairingSecret: nostrWalletConnectUrl,
+    });
+});
 
 /******************************************************************************/

@@ -134,11 +134,14 @@ body.needSave #revertRules {
     grid-template: auto / auto;
     margin: var(--popup-gap) var(--popup-gap) var(--popup-gap-thin) var(--popup-gap);
     }
-#basicStats > span {
+#basicStats > span,
+#basicStats > #enableLightningContainer,
+#enableLightningContainer > span {
     justify-self: center;
     white-space: nowrap;
     }
-#basicStats > [data-i18n] {
+#basicStats > [data-i18n],
+#enableLightningContainer > [data-i18n] {
     font-size: 95%;
     }
 #basicStats > [data-i18n] + span {
@@ -159,6 +162,28 @@ body.needSave #revertRules {
     }
 :root.portrait #basicStats > [data-i18n] + span {
     text-align: end;
+    }
+
+#enableLightningContainer {
+    display: flex;
+    justify-content: center;
+    gap: var(--popup-gap-thin);
+    }
+
+#enableLightningContainer > .fa-icon {
+    cursor: pointer;
+    display: flex;
+    margin: 1px 0 0 0;
+    padding: 0;
+    color: var(--dashboard-happy-green);
+    fill: var(--dashboard-happy-green);
+    }
+#enableLightningContainer > .fa-icon.enabled {
+    color: var(--info3-ink);
+    fill: var(--info3-ink);
+    }
+#enableLightningContainer > .fa-icon:hover {
+    transform: scale(1.25);
     }
 
 .itemRibbon {

@@ -15,12 +15,16 @@
 <body>
 
 <div class="body">
-    <p class="vverbose" data-i18n="lightningPrompt"></p>
-    <bc-button></bc-button>
-</div>
-<div class="fieldset">
-    <div class="fieldset-header" data-i18n="enabledDomains"></div>
-    <div id="enabledDomains"></div>
+    <div class="fieldset">
+        <p class="vverbose" data-i18n="lightningPrompt"></p>
+        <bc-button></bc-button>
+    </div>
+    <hr>
+    <div class="fieldset">
+        <div class="fieldset-header" data-i18n="enabledDomains"></div>
+        <p id="enabledDomainsEmptyMessage" class="vverbose hidden" data-i18n="enabledDomainsEmpty"></p>
+        <div id="enabledDomains"></div>
+    </div>
 </div>
 
 <div id="templates" style="display: none;">
@@ -35,7 +39,7 @@
 <script src="js/theme.js" type="module"></script>
 <script src="js/i18n.js" type="module"></script>
 <script src="js/dashboard-common.js" type="module"></script>
-<script src="js/nostr-tools.js"></script>
+<script src="js/bitcoin-connect/nostr-tools@1.17.0.js"></script>
 <script src="js/lightning.js" type="module"></script>
 
 </body>

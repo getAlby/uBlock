@@ -581,9 +581,7 @@ var A = {
       var o = A[(null == (r = t) ? void 0 : r.providerName) || "alby"];
       (this.options = u({}, o, t || {})),
         (this.relayUrl = this.options.relayUrl),
-        //TODO: relayInit does not exist on the packaged NostrTools
-        //(this.relay = n.relayInit(this.relayUrl)),
-        (this.relay = n.relayConnect(this.relayUrl)),
+        (this.relay = n.relayInit(this.relayUrl)),
         this.options.secret &&
           (this.secret = this.options.secret.toLowerCase().startsWith("nsec")
             ? n.nip19.decode(this.options.secret).data

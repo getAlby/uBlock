@@ -17,18 +17,20 @@ let isRejected = false; // store if the webln enable call failed. if so we do no
 let nwc;
 
 async function init() {
-  const secret = await browser.runtime.sendMessage({
-    type: "lightning.secret",
+  const secret = await vAPI.messaging.send("webln", {
+    what: "getNwcPairingSecret",
   });
   if (!secret) {
     return;
   }
 
-  const lightningEnabled = await browser.runtime.sendMessage({
-    type: "lightning.isAllowlisted",
-    hostname: window.location.hostname,
+  const isDomainEnabled = await vAPI.messaging.send("webln", {
+    what: "isDomainEnabled",
+    domain:
+      window.location.hostname &&
+      window.location.hostname.replace(/^www\./, ""),
   });
-  if (!lightningEnabled) {
+  if (!isDomainEnabled) {
     return;
   }
 
@@ -42,7 +44,7 @@ async function init() {
     // Only accept messages from the current window
     if (
       ev.source !== window ||
-      ev.data.application !== "AdblockPlus" ||
+      ev.data.application !== "uBlock" ||
       ev.data.scope !== "webln"
     ) {
       return;
@@ -85,7 +87,7 @@ async function init() {
           }
         }
 
-        postMessage(ev, response);
+        sendMessage(ev, response);
 
         injectLoaderElement(false);
       };
@@ -96,21 +98,26 @@ async function init() {
   });
 }
 
-init();
+// Abort execution if our global vAPI object does not exist.
+if (typeof vAPI === "object") {
+  init();
 
-browser.runtime.onMessage.addListener((message) => {
-  if (message.type === "lightning.allowlistUpdated") {
-    if (message.enabled && !nwc) {
-      isEnabled = false;
-      isRejected = false;
-      init();
-    } else if (!message.enabled && nwc) {
-      isEnabled = false;
-      isRejected = false;
-      nwc = undefined;
+  browser.runtime.onMessage.addListener((message) => {
+    switch (message.what) {
+      case "enabledDomainsUpdated":
+        if (message.enabled && !nwc) {
+          isEnabled = false;
+          isRejected = false;
+          init();
+        } else if (!message.enabled && nwc) {
+          isEnabled = false;
+          isRejected = false;
+          nwc = undefined;
+        }
+        break;
     }
-  }
-});
+  });
+}
 
 async function injectWebln() {
   try {
@@ -129,11 +136,11 @@ async function injectWebln() {
   }
 }
 
-function postMessage(ev, response) {
+function sendMessage(ev, response) {
   window.postMessage(
     {
       id: ev.data.id,
-      application: "AdblockPlus",
+      application: "uBlock",
       response: true,
       data: response,
       scope: "webln",

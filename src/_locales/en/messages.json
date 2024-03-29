@@ -115,6 +115,10 @@
     "message": "Domains connected",
     "description": "For the new mobile-friendly popup design"
   },
+  "popupEnableLightning": {
+    "message": "Enable Lightning",
+    "description": "English: Enable Lightning"
+  },
   "popupTipDashboard": {
     "message": "Open the dashboard",
     "description": "English: Click to open the dashboard"
@@ -658,6 +662,10 @@
   "enabledDomains": {
     "message": "Enabled domains",
     "description": "Enabled domains section name"
+  },
+  "enabledDomainsEmpty": {
+    "message": "You don't have any enabled domains for Lightning feature.",
+    "description": "Message to show when there are no enabled domains for Lightning feature"
   },
   "logRequestsHeaderType": {
     "message": "Type",

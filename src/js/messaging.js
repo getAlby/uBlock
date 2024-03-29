@@ -191,6 +191,28 @@ const onMessage = function(request, sender, callback) {
             enabledDomains: µb.netEnabledDomains
         };
         break;
+    
+    case 'setEnabledDomain':
+        if ( request.enabled ) {
+            µb.netEnabledDomains = [...µb.netEnabledDomains, request.domain];
+        } else {
+            µb.netEnabledDomains = µb.netEnabledDomains.filter(domain => domain !== request.domain);
+        }
+        µb.saveEnabledDomains();
+        break;
+    
+    case 'isDomainEnabled':
+        response = µb.netEnabledDomains.includes(request.domain);
+        break;
+    
+    case 'saveNwcPairingSecret':
+        µb.userSettings.nwcPairingSecret = request.nwcPairingSecret;
+        µb.saveUserSettings();
+        break;
+    
+    case 'getNwcPairingSecret':
+        response = µb.userSettings.nwcPairingSecret;
+        break;
 
     case 'launchElementPicker':
         // Launched from some auxiliary pages, clear context menu coords.
@@ -232,16 +254,6 @@ const onMessage = function(request, sender, callback) {
         µb.netWhitelist = µb.whitelistFromString(request.whitelist);
         µb.saveWhitelist();
         filteringBehaviorChanged();
-        break;
-      
-    case 'addEnabledDomain':
-        µb.netEnabledDomains = [...µb.netEnabledDomains, request.domain];
-        µb.saveEnabledDomains();
-        break;
-      
-    case 'removeEnabledDomain':
-        µb.netEnabledDomains = µb.netEnabledDomains.filter(domain => domain !== request.domain);
-        µb.saveEnabledDomains();
         break;
 
     case 'toggleHostnameSwitch':
@@ -853,6 +865,41 @@ const onMessage = function(request, sender, callback) {
 vAPI.messaging.listen({
     name: 'contentscript',
     listener: onMessage,
+});
+
+// <<<<< end of local scope
+}
+
+/******************************************************************************/
+/******************************************************************************/
+
+// Channel:
+//      webln
+//      unprivileged
+
+{
+// >>>>> start of local scope
+  
+const onMessage = function (request, sender, callback) {
+    // Sync
+    let response;
+    switch (request.what) {
+    case 'getNwcPairingSecret':
+        response = µb.userSettings.nwcPairingSecret;
+        break;
+    case 'isDomainEnabled':
+        response = µb.netEnabledDomains.includes(request.domain);
+        break;
+    default:
+        return vAPI.messaging.UNHANDLED;
+    }
+
+    callback(response);
+};
+
+vAPI.messaging.listen({
+  name: 'webln',
+  listener: onMessage,
 });
 
 // <<<<< end of local scope

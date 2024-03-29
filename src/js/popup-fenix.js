@@ -816,6 +816,13 @@ let renderOnce = function() {
     if ( popupData.godMode ) {
         dom.cl.add(dom.body, 'godMode');
     }
+    
+    messaging.send('popupPanel', {
+        what: 'isDomainEnabled',
+        domain: popupData.pageDomain,
+    }).then(enabled => {
+        dom.cl.toggle('#enableLightningButton', 'enabled', enabled);
+    });
 };
 
 /******************************************************************************/
@@ -882,6 +889,37 @@ const toggleNetFilteringSwitch = function(ev) {
     });
     renderTooltips('#switch');
     hashFromPopupData();
+};
+
+/******************************************************************************/
+    
+const toggleLightning = async function () {
+    const nwcPairingSecret = await messaging.send('popupPanel', {
+          what: 'getNwcPairingSecret',
+    });
+    if (!nwcPairingSecret) {
+        window.open('dashboard.html#lightning.html', '_blank');
+        vAPI.closePopup();
+        return;
+    }
+    
+    const isDomainEnabled = await messaging.send('popupPanel', {
+        what: 'isDomainEnabled',
+        domain: popupData.pageDomain,
+    });
+    const enabled = !isDomainEnabled;
+    dom.cl.toggle('#enableLightningButton', 'enabled', enabled);
+    
+    await messaging.send('popupPanel', {
+        what: 'setEnabledDomain',
+        domain: popupData.pageDomain,
+        enabled,
+    });
+    
+    browser.tabs.sendMessage(popupData.tabId, {
+        what: 'enabledDomainsUpdated',
+        enabled,
+    });
 };
 
 /******************************************************************************/
@@ -1539,5 +1577,6 @@ dom.on('.hnSwitch', 'click', ev => { toggleHostnameSwitch(ev); });
 dom.on('#saveRules', 'click', saveFirewallRules);
 dom.on('#revertRules', 'click', ( ) => { revertFirewallRules(); });
 dom.on('a[href]', 'click', gotoURL);
+dom.on('#enableLightningButton', 'click', toggleLightning);
 
 /******************************************************************************/

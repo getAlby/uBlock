@@ -127,6 +127,7 @@ const userSettingsDefault = {
     tooltipsDisabled: false,
     userFiltersTrusted: false,
     webrtcIPAddressHidden: false,
+    nwcPairingSecret: '',
 };
 
 const dynamicFilteringDefault = [

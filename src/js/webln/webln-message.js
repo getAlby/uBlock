@@ -14,7 +14,7 @@ export function postMessage(scope, action, args = {}) {
         window.postMessage(
           {
             id: id,
-            application: "AdblockPlus",
+            application: "uBlock",
             prompt: true,
             action: `${action}`,
             scope: scope,
@@ -30,7 +30,7 @@ export function postMessage(scope, action, args = {}) {
             messageEvent.origin !== window.location.origin ||
             !messageEvent.data ||
             !messageEvent.data.response ||
-            messageEvent.data.application !== "AdblockPlus" ||
+            messageEvent.data.application !== "uBlock" ||
             messageEvent.data.scope !== scope ||
             messageEvent.data.id !== id
           ) {
