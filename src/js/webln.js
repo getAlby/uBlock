@@ -26,9 +26,7 @@ async function init() {
 
   const isDomainEnabled = await vAPI.messaging.send("webln", {
     what: "isDomainEnabled",
-    domain:
-      window.location.hostname &&
-      window.location.hostname.replace(/^[^.]*\./, ""),
+    hostname: window.location.hostname,
   });
   if (!isDomainEnabled) {
     return;

@@ -888,7 +888,7 @@ const onMessage = function (request, sender, callback) {
         response = µb.userSettings.nwcPairingSecret;
         break;
     case 'isDomainEnabled':
-        response = µb.netEnabledDomains.includes(request.domain);
+        response = µb.netEnabledDomains.includes(domainFromHostname(request.hostname));
         break;
     default:
         return vAPI.messaging.UNHANDLED;
