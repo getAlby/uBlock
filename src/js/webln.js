@@ -28,7 +28,7 @@ async function init() {
     what: "isDomainEnabled",
     domain:
       window.location.hostname &&
-      window.location.hostname.replace(/^www\./, ""),
+      window.location.hostname.replace(/^[^.]*\./, ""),
   });
   if (!isDomainEnabled) {
     return;
